@@ -1,129 +1,163 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import styles from "./Alerts.module.scss";
-import { IAlertProps, IAlertState } from "./index";
+import { IAlertProps } from "./index";
 import { PnPClientStorage, dateAdd } from "@pnp/common";
-import { IAlertItem } from "./IAlerts.types";
-import { AlertItem } from "./AlertItem/AlertItem";
+import { AlertType, IAlertItem } from "./IAlerts.types";
 import { AlertsService } from "./AlertsService";
 
-export class Alerts extends React.Component<IAlertProps, IAlertState> {
-  private _storage: PnPClientStorage;
-  private _storageKey: string;
+import { Bounce, Id, ToastContainer, ToastItem, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-  private cache_key: string;
-  private readonly CACHE_DURATION = 15; //in minutes
+const Alerts: React.FunctionComponent<IAlertProps> = (props) => {
+  const { siteId } = props;
+  const [storage] = useState(new PnPClientStorage());
+  const storageKey = `${siteId}ClosedAlerts`;
+  const cache_key = `${siteId}AllAlerts`;
+  const CACHE_DURATION = 2; //in minutes
 
-  public constructor(props: IAlertProps) {
-    super(props);
-    if (this.props.showRemoteAlerts) {
-      this._storageKey = "SPFXClosedAlerts";
-      this.cache_key = "SPFXlobalAlerts";
-    } else {
-      this._storageKey = `${this.props.siteId}ClosedAlerts`;
-      this.cache_key = `${this.props.siteId}AllAlerts`;
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
+
+  toast.onChange((payload: ToastItem) => {
+    switch (payload.status) {
+      case "added":
+        // new toast added
+        break;
+      case "updated":
+        // toast updated
+        break;
+      case "removed":
+        // toast has been removed
+        _addClosedAlerts(Number(payload.id));
+        break;
     }
+  });
 
-    this.state = {
-      alerts: [],
-    };
+  const toaster = (myProps, toastProps): Id =>
+    toast(<Msg {...myProps} />, { ...toastProps });
 
-    this._storage = new PnPClientStorage();
-  }
+  toaster.success = (myProps, toastProps): Id =>
+    toast.success(<Msg {...myProps} />, { ...toastProps });
 
-  public render(): React.ReactElement<IAlertProps> {
-    return (
-      <div className={styles.alerts}>
-        <div className={styles.container}>
-          {this.state.alerts.map((val, index) => {
-            return (
-              <AlertItem item={val} remove={this._removeAlert}></AlertItem>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
+  toaster.error = (myProps, toastProps): Id =>
+    toast.error(<Msg {...myProps} />, { ...toastProps });
 
-  public componentWillMount() {
-    // sp.setup({
-    //   sp: {
-    //     headers: {
-    //       Accept: "application/json;odata=verbose"
-    //     },
-    //     baseUrl: `${window.location.protocol}//${window.location.hostname}`
-    //   },
-    //   defaultCachingStore: "session",
-    //   globalCacheDisable: false
-    // });
-  }
+  toaster.warn = (myProps, toastProps): Id =>
+    toast.warn(<Msg {...myProps} />, { ...toastProps });
 
-  public async componentDidMount() {
-    var dateTimeNow: Date = new Date();
-    let items = this._storage.local.get(this.cache_key);
+  toaster.info = (myProps, toastProps): Id =>
+    toast.info(<Msg {...myProps} />, { ...toastProps });
+
+
+  const fetchAlerts = async () => {
+    let closedAlerts = storage.session.get(storageKey);
+    let items = storage.local.get(cache_key);
 
     if (!items) {
-      items = await AlertsService.getAlerts(
-        this.props.showRemoteAlerts,
-        this.props.remoteAlertsSource
-      );
-      //this._storage.local.put(this.cache_key, items, dateAdd(new Date(), "minute", this.CACHE_DURATION));
+      items = await AlertsService.getAlerts();
+      storage.local.put(cache_key, items, dateAdd(new Date(), "minute", CACHE_DURATION));
     }
 
-    var alerts: Array<IAlertItem> = new Array<IAlertItem>();
-    var closedAlerts = this._getClosedAlerts();
-    items.map((val, index) => {
+    let alertItems: Array<IAlertItem> = new Array<IAlertItem>();
+
+    items.forEach((val: IAlertItem) => {
       if (!closedAlerts || closedAlerts.indexOf(val.Id) < 0) {
-        alerts.push({
+        alertItems.push({
           Id: val["Id"],
           title: val["Title"],
           description: val["Description"],
           type: val["AlertType"],
           link: val["Link"],
         });
+        if (val["AlertType"] == AlertType.Actionable) {
+          toaster.success(
+            {
+              title: val["Title"],
+              text: val["Description"],
+              link: val["Link"]
+            }, {
+            toastId: val["Id"],
+            progress: undefined,
+            transition: Bounce,
+          });
+        } else if (val["AlertType"] == AlertType.Warning) {
+          toaster.warn({
+            title: val["Title"],
+            text: val["Description"],
+            link: val["Link"]
+          }, {
+            toastId: val["Id"],
+            progress: undefined,
+            transition: Bounce,
+          });
+        } else if (val["AlertType"] == AlertType.Error) {
+          toaster.error({
+            title: val["Title"],
+            text: val["Description"],
+            link: val["Link"]
+          }, {
+            toastId: val["Id"],
+            progress: undefined,
+            transition: Bounce,
+          });
+        } else {
+          toaster.info({
+            title: val["Title"],
+            text: val["Description"],
+            link: val["Link"]
+          }, {
+            toastId: val["Id"],
+            progress: undefined,
+            transition: Bounce,
+          });
+        }
       }
-      return;
-    });
-
-    this.setState({
-      alerts: alerts,
-    });
-  }
-
-  private _removeAlert = (id: number) => {
-    const items: any = [...this.state.alerts];
-    var itemIndex = -1;
-    this.state.alerts.some((val, index) => {
-      if (val.Id == id) {
-        itemIndex = index;
-        return true;
-      }
-    });
-
-    // Store the removed item id in session storage
-    this._addClosedAlerts(id);
-
-    items.splice(itemIndex, 1);
-    this.setState({
-      alerts: items,
     });
   };
 
-  private _getClosedAlerts = (): Array<number> => {
-    var obj: Array<number> = this._storage.session.get(this._storageKey);
-    return obj;
-  };
-
-  private _addClosedAlerts = (id: number): void => {
-    var closedAlerts = this._getClosedAlerts();
-    if (closedAlerts) {
-      const t = [...closedAlerts];
+  const _addClosedAlerts = (id: number): void => {
+    let closedAlertsInStorage = storage.session.get(storageKey);
+    if (closedAlertsInStorage) {
+      const t = closedAlertsInStorage;
       if (t.indexOf(id) < 0) {
-        closedAlerts.push(id);
+        closedAlertsInStorage.push(id);
       }
     } else {
-      closedAlerts = new Array<number>();
-      closedAlerts.push(id);
+      closedAlertsInStorage = new Array<number>();
+      closedAlertsInStorage.push(id);
     }
-    this._storage.session.put(this._storageKey, closedAlerts);
+    storage.session.put(storageKey, closedAlertsInStorage);
   };
-}
+
+  return (
+    <ToastContainer newestOnTop autoClose={false} hideProgressBar={true} closeOnClick={false} pauseOnHover={false} draggable position="top-right" theme="colored" />
+  );
+};
+
+export default Alerts;
+
+export const Msg = ({ title, text, link }) => {
+  if (link) {
+    const url = link.Url;
+    return (
+      <div className="msg-container">
+        <p className="msg-title">{title}: {text}</p>
+        <p><a href="javascript:void(0)" onClick={handleClick({url})}>{link.Description}</a></p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="msg-container">
+        <p className="msg-title">{title}: {text}</p>
+      </div>
+    );
+  }
+};
+
+const handleClick = (link) => () => {
+  // Your desired URL or action when the link is clicked
+  window.open(link.url, "_blank");
+};
+

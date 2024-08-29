@@ -4,7 +4,7 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo",
       "customActions": {
         "4d54f7c9-2e53-41af-8f9e-7141eadced4b": {
           "location": "ClientSideExtension.ApplicationCustomizer",
@@ -15,7 +15,7 @@
       }
     },
     "alertsHeader": {
-      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo",
       "customActions": {
         "4d54f7c9-2e53-41af-8f9e-7141eadced4b": {
           "location": "ClientSideExtension.ApplicationCustomizer",

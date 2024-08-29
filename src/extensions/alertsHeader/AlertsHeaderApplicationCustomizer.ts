@@ -4,20 +4,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { override } from "@microsoft/decorators";
-import { Log } from "@microsoft/sp-core-library";
 import {
   BaseApplicationCustomizer,
   PlaceholderContent,
   PlaceholderName,
 } from "@microsoft/sp-application-base";
-import { Alerts } from "./components/Alerts/Alerts";
-import * as strings from "AlertsHeaderApplicationCustomizerStrings";
+import Alerts from "./components/Alerts/Alerts";
 import { sp } from "@pnp/sp";
 
 export interface IAlertsHeaderApplicationCustomizerProperties {}
 
 export default class AlertsHeaderApplicationCustomizer extends BaseApplicationCustomizer<IAlertsHeaderApplicationCustomizerProperties> {
   private topPlaceholder: PlaceholderContent | undefined;
+  private bottomPlaceholder: PlaceholderContent | undefined;
 
   @override
   public onInit(): Promise<void> {
@@ -47,6 +46,9 @@ export default class AlertsHeaderApplicationCustomizer extends BaseApplicationCu
       this.topPlaceholder = this.context.placeholderProvider.tryCreateContent(
         PlaceholderName.Top
       );
+      if(this.topPlaceholder.domElement.parentElement.getElementsByClassName("Toastify").length > 0) {
+        return;
+      }
       this._renderControls(3000);
     }
   }
@@ -56,48 +58,13 @@ export default class AlertsHeaderApplicationCustomizer extends BaseApplicationCu
     // This code below would display the alerts in the Top Placeholder zone
     // this is the supported place to display the application customizers
 
-    // if (this.topPlaceholder.domElement) {
-    //   const alertElement: React.ReactElement<any> = React.createElement(
-    //     Alerts,
-    //     { siteId: this.context.pageContext.web.id.toString() }
-    //   );
-    //   ReactDOM.render(alertElement, this.topPlaceholder.domElement);
-    // }
-
-
-    // This code below will display the alerts under the header
-    // this is the unsupported place to display the applcation customizer
-
-    try {
-      // The event is getting called before the page navigation happens
-      // Due to this, the onScroll event that we are adding (for BackToTop)
-      // is getting reset when the partial page load is finished
-      // There is an open issue regarding this - https://github.com/SharePoint/sp-dev-docs/issues/5321
-      // So, I have added a 3 seconds delay for the child components to load.
-      // This is a temporary fix untill the actual issue in SPFx is resolved.
-      setTimeout(async () => {
-        if (this.topPlaceholder) {
-
-            // Render the local alerts below default header
-          let alertsContainer = document.getElementById("spfx-alerts-container");
-          if (!alertsContainer) {
-            const headerDiv = document.getElementById("spSiteHeader");
-            alertsContainer = document.createElement("div");
-            alertsContainer.id = "spfx-alerts-container";
-            headerDiv.appendChild(alertsContainer);
-          }
-          const alertElement: React.ReactElement<any> = React.createElement(
-            Alerts,
-            { siteId: this.context.pageContext.web.id.toString() }
-          );
-          ReactDOM.render(alertElement, alertsContainer);
-        } else {
-          this.renderPlaceHolders();
-        }
-      }, delay);
-    } catch (ex) {
-      console.dir(ex);
-      console.warn(ex);
+    if (this.topPlaceholder.domElement) {
+      const alertElement: React.ReactElement<any> = React.createElement(
+        Alerts,
+        { siteId: this.context.pageContext.web.id.toString() }
+      );
+      ReactDOM.render(alertElement, this.topPlaceholder.domElement);
     }
-  };
+
+   }
 }

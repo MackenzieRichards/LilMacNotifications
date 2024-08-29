@@ -25,4 +25,5 @@ export enum AlertType {
   Info = "Info",
   Warning = "Warning",
   Actionable = "Actionable",
+  Error = "Error"  
 }
