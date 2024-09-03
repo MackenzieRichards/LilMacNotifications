@@ -5,12 +5,22 @@ npm-debug.log*
 
 # Dependency directories
 node_modules
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
 
 # Build generated files
 dist
 lib
-debug
+release
+solution
 temp
+*.sppkg
+.heft
 
 # Coverage directory used by tools like istanbul
 coverage
@@ -29,7 +39,4 @@ obj
 
 # Styles Generated Code
 *.scss.ts
-.history/
-release
-sharepoint
-
+.history

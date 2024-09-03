@@ -1,12 +1,13 @@
-import { sp, Web } from '@pnp/sp';
+import { sp } from '@pnp/sp';
 
 export class AlertsService {
   public static readonly LIST_TITLE: string = "Alerts";
   public static readonly CONFIG_KEY: string = "AlertsSource";
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static async getAlerts(): Promise<Array<any>> {
 
-    var dateTimeNow: Date = new Date();
+    const dateTimeNow: Date = new Date();
 
     return sp.web.lists
       .getByTitle("Alerts")

@@ -3,7 +3,7 @@
   "alias": "AlertsHeaderApplicationCustomizer",
   "componentType": "Extension",
   "extensionType": "ApplicationCustomizer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "manifestVersion": 2,
   "requiresCustomScript": false,
   "loaderConfig": {
@@ -14,27 +14,27 @@
     "scriptResources": {
       "alerts-header-application-customizer": {
         "type": "path",
-        "path": "alerts-header-application-customizer_2338ad98ac3d9c073f2a.js"
-      },
-      "@microsoft/sp-application-base": {
-        "type": "component",
-        "id": "4df9bb86-ab0a-4aab-ab5f-48bf167048fb",
-        "version": "1.13.1"
+        "path": "alerts-header-application-customizer_dced267019880bc0bf85.js"
       },
       "react": {
         "type": "component",
         "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
-        "version": "16.13.1"
+        "version": "17.0.1"
       },
       "react-dom": {
         "type": "component",
         "id": "aa0a46ec-1505-43cd-a44a-93f3a5aa460a",
-        "version": "16.13.1"
+        "version": "17.0.1"
       },
       "@microsoft/decorators": {
         "type": "component",
         "id": "f97266fb-ccb7-430e-9384-4124d05295d3",
-        "version": "1.13.1"
+        "version": "1.19.0"
+      },
+      "@microsoft/sp-application-base": {
+        "type": "component",
+        "id": "4df9bb86-ab0a-4aab-ab5f-48bf167048fb",
+        "version": "1.19.0"
       }
     }
   }

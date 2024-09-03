@@ -1,11 +1,20 @@
 {
   "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
     "isCreatingSolution": true,
+    "nodeVersion": "18.17.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.19.0",
+    "libraryName": "alertsheader",
+    "libraryId": "3d3d92af-a46f-442c-8455-8794e0076973",
     "environment": "spo",
-    "version": "1.11.0",
-    "libraryName": "alerts-header",
-    "libraryId": "2a487cbd-1d6a-4e0c-95be-9af8639b4d61",
     "packageManager": "npm",
+    "solutionName": "alertsheader",
+    "solutionShortDescription": "alertsheader description",
+    "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "componentType": "extension",
     "extensionType": "ApplicationCustomizer"
