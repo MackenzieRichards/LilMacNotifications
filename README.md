@@ -1,7 +1,7 @@
 # Introduction
-This project is an SPFx application customizer built for Modern SharePoint sites / pages. It will place itself in the header placeholder of your site and show alerts from a list within your site. Check out the [blog](https://thomasdaly.net/2021/10/10/alerts-header-spfx-project/).
+This project is an SPFx application customizer built for Modern SharePoint sites / pages. It will place itself in the header placeholder of your site and show alerts from a list within your site. It was initially based on this project [blog](https://thomasdaly.net/2021/10/10/alerts-header-spfx-project/), but replaced alerts showing in the header with react-toastify style alerts. 
 
-Rebuilt fresh on SPFx v1.13.1 so that it will support:
+Rebuilt fresh on SPFx v1.19.0 so that it will support:
 
 Environments
 + Office 365
@@ -12,17 +12,14 @@ Browers
 + FireFox
 
 ## Why does this project exist? 
-This is just an interesting example of a site alerts that would be useful on your SharePoint intranet page. This would show users important announcements when they visit the home page. It can be set to show / expire based on dates and times. 
+Show users important announcements when they visit the home page. It can be set to show / expire based on dates and times. 
 
-## Modern Page Demonstration
-Designed for Modern Sites
-![demo on modern](https://thomasdaly.net/wp-content/uploads/2022/02/2022-02-05_15-13-14-2.gif)
 
 # Prerequisites to Build
 1. [SPFx Development Environment](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-development-environment)
 2. [Tenant App Catalog](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant#create-app-catalog-site)
-4. Node 14.x.x
-5. SPFx v1.13.1
+4. Node 18.x.x
+5. SPFx v1.19.0
 
 # Installation & Deployment
 The following steps assume that you've cloned this repository or downloaded the files and successfully installed all the dependencies using 'npm install'. Make sure to use the same version of node to get a successfull build. 
@@ -64,9 +61,6 @@ Activation on a Modern site deployment is straightforward. [For more information
 ![adding to site](https://github.com/tom-daly/spfx-side-navigation/blob/master/images/add_app.gif)
 
 # Modifications
-
-## Updating the Styles + Changing Colors, Adding Alert Types and Icons
-This project was setup with three different styles: Alert, Actionable and Information. More types can be added with your own custom styles. Font Awesome is used for the fonts which provides plenty of free icons. Please read the blog post for more information [blog](https://thomasdaly.net/2021/10/10/alerts-header-spfx-project/).
 
 
 # How To Use
