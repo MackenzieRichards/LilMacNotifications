@@ -4,26 +4,10 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo",
-      "customActions": {
-        "4d54f7c9-2e53-41af-8f9e-7141eadced4b": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
-          "properties": {
-            "testMessage": "Test message"
-          }
-        }
-      }
+      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo"
     },
     "alertsHeader": {
-      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo",
-      "customActions": {
-        "4d54f7c9-2e53-41af-8f9e-7141eadced4b": {
-          "location": "ClientSideExtension.ApplicationCustomizer",
-          "properties": {
-            "testMessage": "Test message"
-          }
-        }
-      }
+      "pageUrl": "https://boyerandhoes.sharepoint.com/sites/AlertsDemo"
     }
   }
 }

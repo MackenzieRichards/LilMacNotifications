@@ -1,9 +1,9 @@
 {
     "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
     "solution": {
-        "name": "alerts-header-client-side-solution",
-        "id": "2a487cbd-1d6a-4e0c-95be-9af8639b4d61",
-        "version": "1.0.1.9",
+        "name": "alerts-toastify-client-side-solution",
+        "id": "1688f460-a25e-49db-852c-b310412cec98",
+        "version": "1.1.0.0",
         "includeClientSideAssets": true,
         "isDomainIsolated": false,
         "developer": {
@@ -17,7 +17,7 @@
             {
                 "title": "Application Extension - Deployment of custom action.",
                 "description": "Deploys a custom action with ClientSideComponentId association",
-                "id": "d4d7ee33-4aab-49ff-9759-927ec405fc33",
+                "id": "d4d7ee33-4aab-49ff-9759-927ec405fc30",
                 "version": "1.0.0.0",
                 "assets": {
                     "elementManifests": [
